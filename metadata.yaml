@@ -1,0 +1,6 @@
+name: astrbot_plugin_keyword_mapping
+version: v1.0.0
+display_name: 关键词映射系统
+desc: 群友发送关键词后自动进行回复。
+author: 陨落基围虾
+repo: https://github.com/Rundll86/astrbot_plugin_keyword_mapping
