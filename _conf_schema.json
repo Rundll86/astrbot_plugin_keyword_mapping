@@ -29,5 +29,11 @@
         "hint": "群友发的话中出现了多少次关键词，就回复多少条关键词对应的值。",
         "type": "bool",
         "default": false
+    },
+    "strict_case": {
+        "description": "区分大小写",
+        "hint": "判断关键词时是否区分大小写",
+        "type": "bool",
+        "default": true
     }
 }

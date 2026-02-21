@@ -15,16 +15,22 @@ class KeywordMappingPlugin(Star):
     @use_group_state(False, False)
     async def all_message(self, state: GroupState, event: AstrMessageEvent):
         if state.switch:
-            mappings = self.config.get("mappings", [])
+            msg = (
+                event.message_str
+                if self.config["strict_case"]
+                else event.message_str.lower()
+            )
+            mappings: list[dict[str, str]] = self.config.get("mappings", [])
             values = []
             count = 0
+            keys = set[str]()
             for pair in mappings:
-                if (
-                    pair["key"] not in state.ban_keywords
-                    and pair["key"] in event.message_str
-                ):
+                key = pair["key"] if self.config["strict_case"] else pair["key"].lower()
+                if key not in state.ban_keywords and key in msg:
                     values.append(pair["value"])
-                    count += 1
+                    keys.add(key)
+            for key in keys:
+                count += msg.count(key)
             if len(values) > 0:
                 for _ in range(count if self.config["time_sync_count"] else 1):
                     yield event.plain_result(random.choice(values))

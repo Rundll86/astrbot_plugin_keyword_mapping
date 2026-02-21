@@ -1,15 +1,15 @@
+import json
 from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel
 
+from astrbot.api import logger
+
 
 class GroupState(BaseModel):
     switch: bool
     ban_keywords: list[str]
-
-    def __init__(self) -> None:
-        super().__init__(switch=True, ban_keywords=[])
 
     def format(self) -> str:
         return f"关键词映射：{'开' if self.switch else '关'}，关键词剔除列表：{'，'.join(self.ban_keywords)}"
@@ -22,11 +22,14 @@ class GroupState(BaseModel):
     def read(cls, fp: str | Path):
         with SafeFileStream(
             fp,
-            {
-                "switch": True,
-                "ban_keywords": [],
-            },
+            json.dumps(
+                {
+                    "switch": True,
+                    "ban_keywords": [],
+                }
+            ),
         ) as file:
+            logger.info(file.read())
             return cls.model_validate_json(file.read())
 
 
