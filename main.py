@@ -22,18 +22,20 @@ class KeywordMappingPlugin(Star):
             )
             mappings: list[dict[str, str]] = self.config.get("mappings", [])
             values = []
+            weights = []
             count = 0
             keys = set[str]()
             for pair in mappings:
                 key = pair["key"] if self.config["strict_case"] else pair["key"].lower()
                 if key not in state.ban_keywords and key in msg:
                     values.append(pair["value"])
+                    weights.append(pair["weight"])
                     keys.add(key)
             for key in keys:
                 count += msg.count(key)
             if len(values) > 0:
                 for _ in range(count if self.config["time_sync_count"] else 1):
-                    yield event.plain_result(random.choice(values))
+                    yield event.plain_result(random.choices(values, weights, k=1)[0])
 
     @filter.command_group(
         "kwm",
