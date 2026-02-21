@@ -23,5 +23,11 @@
                 }
             }
         }
+    },
+    "time_sync_count": {
+        "description": "回复数量为关键词数量",
+        "hint": "群友发的话中出现了多少次关键词，就回复多少条关键词对应的值。",
+        "type": "bool",
+        "default": false
     }
 }
