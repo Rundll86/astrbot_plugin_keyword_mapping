@@ -28,7 +28,8 @@ def use_group_state(save: bool, print_state: bool):
         ],
     ):
         async def wrapper(
-            self, event: AstrMessageEvent
+            self: "KeywordMappingPlugin",
+            event: AstrMessageEvent,
         ) -> AsyncGenerator[MessageEventResult]:
             group = event.get_group_id()
             state = read_group_state(group)

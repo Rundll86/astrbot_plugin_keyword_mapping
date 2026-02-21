@@ -19,11 +19,15 @@ class KeywordMappingPlugin(Star):
             values = []
             count = 0
             for pair in mappings:
-                if pair["key"] in event.message_str:
+                if (
+                    pair["key"] not in state.ban_keywords
+                    and pair["key"] in event.message_str
+                ):
                     values.append(pair["value"])
                     count += 1
-            for _ in range(count):
-                yield event.plain_result(random.choice(values))
+            if len(values) > 0:
+                for _ in range(count if self.config["time_sync_count"] else 1):
+                    yield event.plain_result(random.choice(values))
 
     @filter.command_group(
         "kwm",
